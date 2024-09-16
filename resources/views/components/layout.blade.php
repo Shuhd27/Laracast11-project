@@ -7,14 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="h-full">
-    <!--
-  This example requires updating your template:
-
-  ```
-  <html class="h-full bg-gray-100">
-  <body class="h-full">
-  ```
--->
 <div class="min-h-full">
   <nav class="bg-gray-800">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -25,9 +17,9 @@
           </div>
           <div class="hidden md:block">
             <div class="ml-10 flex items-baseline space-x-4">
-              <x-nav-link href="/">Home</a>
-              <x-nav-link href="/about">About</a>
-              <x-nav-link href="/contact">Contact</a>
+              <x-nav-link href="/">Home</x-nav-link>
+              <x-nav-link href="/about">About</x-nav-link>
+              <x-nav-link href="/contact" active="false">Contact</x-nav-link>
             </div>
           </div>
         </div>
