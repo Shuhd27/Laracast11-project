@@ -14,4 +14,4 @@
         </a>
         @endforeach
     </div>
-</x-layout>
+</x-layout>l
