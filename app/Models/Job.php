@@ -11,9 +11,9 @@ class Job extends Model {
     protected $table = 'job_listings';
 
     // a way to use for the jobs/create
-    protected $guarded = ['employer_id', 'title', 'salary'];
+    // protected $fillable = ['employer_id', 'title', 'salary'];
 
-    // a simple way to use for jobs/create
+    // a simple way to use for 
     protected $guarded = [];
 
     public function employer()
