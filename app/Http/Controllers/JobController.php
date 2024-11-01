@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Mail\JobPosted;
 use App\Models\Job;
-use Illuminate\Http\Request;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-
+use Illuminate\Support\Facades\Mail;
 
 class JobController extends Controller
 {
     public function index()
     {
         $jobs = Job::with('employer')->latest()->simplePaginate(3);
-        
+
         return view('jobs.index', [
             'jobs' => $jobs
         ]);
@@ -36,13 +36,17 @@ class JobController extends Controller
             'title' => ['required', 'min:3'],
             'salary' => ['required']
         ]);
-    
-        Job::create([
+
+        $job = Job::create([
             'title' => request('title'),
             'salary' => request('salary'),
             'employer_id' => 1
         ]);
-    
+
+        Mail::to($job->employer->user)->send(
+            new JobPosted($job)
+        );
+
         return redirect('/jobs');
     }
 
@@ -53,41 +57,27 @@ class JobController extends Controller
 
     public function update(Job $job)
     {
-        // authorize (on hold....)
         Gate::authorize('edit-job', $job);
 
-        // validate
         request()->validate([
             'title' => ['required', 'min:3'],
             'salary' => ['required']
         ]);
-        
-        // update the job
+
         $job->update([
             'title' => request('title'),
-            'salary' => request('salary')
+            'salary' => request('salary'),
         ]);
 
-        // redirect to the job page
         return redirect('/jobs/' . $job->id);
     }
 
     public function destroy(Job $job)
     {
-        // Authorize (on hold....)
         Gate::authorize('edit-job', $job);
 
-        // Delete
         $job->delete();
-        
-        // Redirect
+
         return redirect('/jobs');
     }
 }
-
-    // Andere manier om de job te updaten
-/*        
-    $job->title = request('title');
-    $job->salary = request('salary');
-    $job->save();
-*/
